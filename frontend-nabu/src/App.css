@@ -16,7 +16,6 @@ body {
 .navigation {
   background-color: #dfe5d4;
   flex-grow: 1;
-  font-size: 12px;
 }
 
 .main {
@@ -33,5 +32,15 @@ body {
 
 .chat {
   flex-grow: 19;
+  display: flex;
+  flex-direction: column;
   background-color: #f2f4ef;
+}
+
+.chat-text-field {
+  flex-grow:1;
+}
+
+.chat-messages {
+  flex-grow: 50;
 }
