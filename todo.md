@@ -1,1 +1,3 @@
- - add chat frontend with pre-refresh pushing messages
+- add chat frontend with pre-refresh pushing messages
+- textfield at the bottom.
+- state for messages in current channel

@@ -10,14 +10,14 @@ function ChatTextField(props: {newMessage: Function }) {
 
   function sendMessage(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    props.newMessage({sender: "Qnsi", text: message})
+    props.newMessage({id: 0, sender: "Qnsi", text: message, status: "waiting"})
     updateMessage("")
   }
   return (
-    <div className="chat-text-field">
+    <div className="chat-message-form">
       <form onSubmit={sendMessage}>
-        <input type="text" value={message} onChange={handleChange} />
-        <input type="submit" value="Send" />
+        <input className="chat-text-field" type="text" value={message} onChange={handleChange} />
+        <input className="chat-submit" type="submit" value="Send" />
       </form> 
     </div>
   )
