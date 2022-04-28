@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express"
 import cors from "cors"
 import { PrismaClient } from '@prisma/client'
-import NewMessageController from "./controllers/NewMessageController"
+import { GetAllMessages, CreateNewMessage }  from "./controllers/MessagesController"
 
 const prisma = new PrismaClient()
 
@@ -13,11 +13,11 @@ app.use(express.json())
 
 
 app.get("/messages", (req: Request, res: Response) => {
-  res.json("to implement")
+  GetAllMessages(req, res, prisma)
 })
 
 app.post("/message/new", (req: Request, res: Response) => {
-  NewMessageController(req, res, prisma)
+  CreateNewMessage(req, res, prisma)
 })
 
 app.get("/message/new", (req: Request, res: Response) => {
