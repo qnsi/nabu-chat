@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express"
 import cors from "cors"
 import { PrismaClient } from '@prisma/client'
 import { GetAllMessages, CreateNewMessage }  from "./controllers/MessagesController"
+import { GetAllChannels } from "./controllers/ChannelsController"
 
 const prisma = new PrismaClient()
 
@@ -20,9 +21,8 @@ app.post("/message/new", (req: Request, res: Response) => {
   CreateNewMessage(req, res, prisma)
 })
 
-app.get("/message/new", (req: Request, res: Response) => {
-  console.log("Got GET message request")
-  res.json({status: "ok"})
+app.get("/channels", (req: Request, res: Response) => {
+  GetAllChannels(req, res, prisma)
 })
 
 // hacky way to clear test_db between tests. Probably would need docker to run tests in real isolation
@@ -32,12 +32,40 @@ app.get("/dangerous/only_in_dev/clear_database", (req: Request, res: Response) =
   })
 })
 
-app.listen(PORT, () => {
-  let mockUser = prisma.user.create({
-    data: {
-      username: "qnsi"
-    }
-  }).then(() => {
-    console.log(`Server listening on ${PORT}`)
-  })
+app.listen(PORT, async () => {
+  createSeedUser("qnsi")
+  createSeedChannel("main")
+  createSeedChannel("random")
+  console.log(`Server listening on ${PORT}`)
 })
+
+async function createSeedUser(username: string) {
+  let user = await prisma.user.findFirst({
+    where: {
+      username
+    }
+  })
+  if (user === null) {
+    let user = await prisma.user.create({
+      data: {
+        username
+      }
+    })
+  }
+}
+
+async function createSeedChannel(name: string) {
+  let channel = await prisma.channel.findFirst({
+    where: {
+      name
+    }
+  })
+
+  if (channel === null) {
+    await prisma.channel.create({
+      data: {
+        name
+      }
+    })
+  }
+}

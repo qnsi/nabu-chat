@@ -3,7 +3,7 @@ import ChatTextField from "./ChatTextField";
 import ChatMessages from "./ChatMessages";
 import { CreateNewMessage, GetAllMessages } from "../controllers/MessagesController";
 
-export type messageType = {id: number, sender: string, text: string, status: string}
+export type messageType = {id: number, channelId: number, sender: string, text: string, status: string}
 export type messagesArray = Array<messageType>
 const initial_messages: messagesArray = [
 ]

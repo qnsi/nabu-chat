@@ -28,7 +28,7 @@ export async function CreateNewMessage(message: messageType): Promise<messageTyp
 
 export async function GetAllMessages(): Promise<{messages: messageType[], status: string}> {
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:3001/messages", {
+    fetch("http://localhost:3001/messages?channelId=1", {
       method: "GET",
       headers: {
         "Accept": "application/json"
@@ -48,9 +48,9 @@ export async function GetAllMessages(): Promise<{messages: messageType[], status
   })
 }
 
-function parseMessagesFromJson(jsonArray: Array<{id: number, createAt: string, updatedAt: string, content: string, senderId: number}>) {
+function parseMessagesFromJson(jsonArray: Array<{id: number, channelId: number, createAt: string, updatedAt: string, content: string, senderId: number}>) {
   const messages: Array<messageType> = jsonArray.map(message => {
-    return {id: message.id, sender: "Qnsi", text: message.content, status: "ok"}
+    return {id: message.id, channelId: message.channelId, sender: "Qnsi", text: message.content, status: "ok"}
   })
   return messages
 }
