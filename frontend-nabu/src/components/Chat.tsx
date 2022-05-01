@@ -5,15 +5,13 @@ import { CreateNewMessage, GetAllMessages } from "../controllers/MessagesControl
 
 export type messageType = {id: number, channelId: number, sender: string, text: string, status: string}
 export type messagesArray = Array<messageType>
-const initial_messages: messagesArray = [
-]
+const initial_messages: messagesArray = []
 
 function Chat() {
   const [messages, setMessages] = React.useState(initial_messages)
   React.useEffect(() => {
     GetAllMessages().then((res: {messages: messageType[], status: string}) => {
       if (res.status === "ok") {
-        console.log(res.messages)
         setMessages(res.messages)
       } else {
         //
