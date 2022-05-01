@@ -22,6 +22,11 @@ In second window:
 `npm start`
 Chat window should open with a very basic chat.
 
+To run tests:
+in project root
+`npm install -D @playwright/test`
+`npx playwright test`
+
 # Nabu vision
 Slack / slack-like team chat applications are ubiquitous in companies right now. Most people I talk to, are stressed by a constant need to monitor team chat, never knowing if notification is signaling a very important message from their boss or just another cool meme sent by a colleague. As a result our work is getting more chaotic, fragmented and we produce less valuable work. My esteemed reader have probably read Deep Work by Cal Newport. The other problem I find with team chat is ephemeral nature, where text messages are getting lost and forgotten, and you have to rely on memory about what was decided regarding specific tasks.
 
