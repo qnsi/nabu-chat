@@ -13,20 +13,31 @@ This is how you would check if your program works without any tests. You would r
 
 # How to run
 In one window:
+
 `cd backend-nabu/`
+
 `cp .env.example .env`
+
 `npx prisma generate`
+
 `npx ts-node index.ts`
+
 the server will start at port 3001
 
 In second window:
+
 `cd frontend-nabu/`
+
 `npm start`
+
 Chat window should open with a very basic chat.
 
 To run tests:
+
 in project root
+
 `npm install -D @playwright/test`
+
 `npx playwright test`
 
 # Nabu vision
