@@ -14,6 +14,8 @@ This is how you would check if your program works without any tests. You would r
 # How to run
 In one window:
 `cd backend-nabu/`
+`cp .env.example .env`
+`npx prisma generate`
 `npx ts-node index.ts`
 the server will start at port 3001
 
