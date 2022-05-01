@@ -20,6 +20,8 @@ In one window:
 
 `npx prisma generate`
 
+`npx prisma migrate dev`
+
 `npx ts-node index.ts`
 
 the server will start at port 3001
@@ -39,6 +41,8 @@ in project root
 Right now you need to stop development backend server and run it again with different db
 
 `DATABASE_URL="file:./test.db" npx ts-node index.ts`
+
+`DATABASE_URL="file:./test.db" npx prisma migrate dev`
 
 `npm install -D @playwright/test`
 

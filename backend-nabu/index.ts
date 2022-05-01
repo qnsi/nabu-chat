@@ -25,6 +25,19 @@ app.get("/message/new", (req: Request, res: Response) => {
   res.json({status: "ok"})
 })
 
+// hacky way to clear test_db between tests. Probably would need docker to run tests in real isolation
+app.get("/dangerous/only_in_dev/clear_database", (req: Request, res: Response) => {
+  prisma.message.deleteMany({}).then(() => {
+    res.json({status: "ok"})
+  })
+})
+
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`)
+  let mockUser = prisma.user.create({
+    data: {
+      username: "qnsi"
+    }
+  }).then(() => {
+    console.log(`Server listening on ${PORT}`)
+  })
 })
