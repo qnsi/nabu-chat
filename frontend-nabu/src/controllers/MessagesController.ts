@@ -26,9 +26,9 @@ export async function CreateNewMessage(message: messageType): Promise<messageTyp
   })
 }
 
-export async function GetAllMessages(): Promise<{messages: messageType[], status: string}> {
+export async function GetAllMessages(channelId: number): Promise<{messages: messageType[], status: string}> {
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:3001/messages?channelId=1", {
+    fetch(`http://localhost:3001/messages?channelId=${channelId}`, {
       method: "GET",
       headers: {
         "Accept": "application/json"

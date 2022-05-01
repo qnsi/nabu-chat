@@ -7,17 +7,21 @@ export type messageType = {id: number, channelId: number, sender: string, text: 
 export type messagesArray = Array<messageType>
 const initial_messages: messagesArray = []
 
-function Chat() {
+
+function Chat(props: {activeChannelId: number}) {
   const [messages, setMessages] = React.useState(initial_messages)
+
   React.useEffect(() => {
-    GetAllMessages().then((res: {messages: messageType[], status: string}) => {
-      if (res.status === "ok") {
-        setMessages(res.messages)
-      } else {
-        //
-      }
-    })
-  }, [])
+    if (props.activeChannelId !== 0) {
+      GetAllMessages(props.activeChannelId).then((res: {messages: messageType[], status: string}) => {
+        if (res.status === "ok") {
+          setMessages(res.messages)
+        } else {
+          //
+        }
+      })
+    }
+  }, [props.activeChannelId])
 
   async function newMessage(message: messageType) {
     const messageWithOrWithoutError: messageType = await CreateNewMessage(message)
@@ -32,7 +36,7 @@ function Chat() {
   return (
     <div className="chat">
       <ChatMessages messages={messages} retrySendingMessage={retrySendingMessage}/>
-      <ChatTextField newMessage={newMessage}/>
+      <ChatTextField newMessage={newMessage} activeChannelId={props.activeChannelId}/>
     </div>
   )
 }

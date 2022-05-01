@@ -30,6 +30,10 @@ body {
   background-color: #ecefe6;
 }
 
+.channel-active {
+  background-color: #dfe5d4;
+}
+
 .chat {
   flex-grow: 19;
   display: flex;

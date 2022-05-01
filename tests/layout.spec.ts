@@ -8,7 +8,7 @@ test("has correct layout", async ({ page }) => {
   await expect(navbar).toHaveText("Nabu")
   
   const left_panel = page.locator(".left-panel");
-  await expect(left_panel).toHaveText("#main")
+  await expect(left_panel).toHaveText("mainrandom")
 
   const chat_text_field = page.locator(".chat-message-form")
   await expect(chat_text_field).toBeVisible()
