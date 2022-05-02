@@ -1,4 +1,4 @@
-import { messageType } from "../components/Chat"
+import { messagesArray, messageType } from "../components/Chat"
 
 export async function CreateNewMessage(message: messageType): Promise<messageType> {
   return new Promise((resolve, reject) => {
@@ -46,6 +46,25 @@ export async function GetAllMessages(channelId: number): Promise<{messages: mess
       resolve({messages: [], status: "error"})
     })
   })
+}
+
+export function setServerSideEvents(setMessages: Function, channelId: number, lastMessageId: number) {
+  var clientUUID = crypto.randomUUID()
+  var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${channelId}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
+
+  eventSource.onmessage = e => {
+    const messages = parseMessagesFromJson(JSON.parse(e.data))
+    setMessages((state: messagesArray) => {
+      var notSyncedMessages: messagesArray = []
+      for (let message of messages) {
+        var index = state.findIndex(state_message => state_message.id === message.id) 
+        if (index === -1) {
+          notSyncedMessages.push(message)
+        }
+      }
+      return state.concat(notSyncedMessages)
+    })
+  }
 }
 
 function parseMessagesFromJson(jsonArray: Array<{id: number, channelId: number, createAt: string, updatedAt: string, content: string, senderId: number}>) {
