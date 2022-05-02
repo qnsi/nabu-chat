@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { text } from "stream/consumers";
+import { messageType } from "..";
 
-export async function CreateNewMessage(req: Request, res: Response, prisma: PrismaClient) {
+export async function CreateNewMessage(req: Request, res: Response, prisma: PrismaClient, notSyncedMessages: messageType[]) {
   let errors = guard_create_new_parameters(req, res, prisma)
   if (errors.length > 0) {
     res.json({status: "error", errors})
@@ -14,6 +15,7 @@ export async function CreateNewMessage(req: Request, res: Response, prisma: Pris
         channelId: req.body.channelId
       }
     })
+    notSyncedMessages.push({...message, createdAt: `${message.createdAt}`, updatedAt: `${message.updatedAt}`})
     res.json({message: message, status: "ok"})
   }
 }
