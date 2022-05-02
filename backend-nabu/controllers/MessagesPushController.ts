@@ -26,7 +26,8 @@ export async function createAndRunMessageEvent(req: Request, res: Response, not_
   }
 
   while (sendingEvents) {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     var biggestIdForUUID = Number(req.query.lastMessageId)
     var notSyncedForUUID: messageType[] = []
     for (let message of not_synced_messages) {
