@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Chat from './components/Chat';
+import Navigation from './components/Navigation';
 import ChannelList, { channelsArray } from './components/ChannelList'
 
 const initial_channels: channelsArray = []
@@ -17,11 +18,26 @@ function App() {
       setActiveChannelId(channels[activeIndex].id)
     }
   }, [channels])
+
+  function updateActiveChannel(channelId: number) {
+    setChannels((state: channelsArray) => {
+      var clickedIndex = state.findIndex(x => x.id == channelId);
+      var lastActiveIndex = state.findIndex(x => x.status == "active")
+
+      var nextState = state.slice()
+
+      nextState[lastActiveIndex].status = "ok"
+      nextState[clickedIndex].status = "active"
+
+      return nextState
+    })
+  }
+
   return (
     <div className="App">
-      <div className="navigation">Nabu</div>
+      <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
       <div className="main">
-        <ChannelList channels={channels} setChannels={setChannels}/>
+        <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel}/>
         <Chat activeChannelId={activeChannelId}/>
       </div>
     </div>

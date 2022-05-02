@@ -5,7 +5,7 @@ export type channelType = {id: number, name: string, status: string}
 export type channelsArray = Array<channelType>
 
 
-function ChannelList(props: {channels: channelsArray, setChannels: Function}) {
+function ChannelList(props: {channels: channelsArray, setChannels: Function, updateActiveChannel: Function}) {
   React.useEffect(() => {
     GetAllChannels().then((res: {channels: channelsArray, status: string}) => {
       if (res.status === "ok") {
@@ -19,18 +19,9 @@ function ChannelList(props: {channels: channelsArray, setChannels: Function}) {
   function handleChannelClick(e: React.MouseEvent) {
     e.preventDefault()
     let channelId = Number(e.currentTarget.id.substring(8))
-    props.setChannels((state: channelsArray) => {
-      var clickedIndex = state.findIndex(x => x.id == channelId);
-      var lastActiveIndex = state.findIndex(x => x.status == "active")
-
-      var nextState = state.slice()
-
-      nextState[lastActiveIndex].status = "ok"
-      nextState[clickedIndex].status = "active"
-
-      return nextState
-    })
+    props.updateActiveChannel(channelId)
   }
+
 
   return (
     <div className="left-panel">

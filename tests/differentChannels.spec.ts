@@ -1,7 +1,7 @@
 import {test, expect} from "@playwright/test"
 import { sendMessage } from "./testHelpers.spec";
 
-test("moving between chats work", async ({ page }) => {
+test("moving between channels work", async ({ page }) => {
   await page.goto("http://localhost:3001/dangerous/only_in_dev/clear_database")
   await page.goto("http://localhost:3000/")
   await sendMessage(page, "Hello world!")
