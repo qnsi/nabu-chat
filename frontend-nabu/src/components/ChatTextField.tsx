@@ -1,6 +1,6 @@
 import React from "react"
 
-function ChatTextField(props: {newMessage: Function, activeChannelId: number}) {
+function ChatTextField(props: {newMessage: Function, activeChannelIdRef: React.MutableRefObject<number>}) {
   const [message, updateMessage] = React.useState("")
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
@@ -10,7 +10,7 @@ function ChatTextField(props: {newMessage: Function, activeChannelId: number}) {
 
   function sendMessage(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    props.newMessage({id: 0, sender: "Qnsi", text: message, status: "waiting", channelId: props.activeChannelId})
+    props.newMessage({id: 0, sender: "Qnsi", text: message, status: "waiting", channelId: props.activeChannelIdRef.current})
     updateMessage("")
   }
   return (

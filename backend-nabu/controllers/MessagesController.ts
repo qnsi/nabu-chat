@@ -16,6 +16,8 @@ export async function CreateNewMessage(req: Request, res: Response, prisma: Pris
       }
     })
     notSyncedMessages.push({...message, createdAt: `${message.createdAt}`, updatedAt: `${message.updatedAt}`})
+    console.log("Created message. Return json: ")
+    console.log({message: message, status: "ok"})
     res.json({message: message, status: "ok"})
   }
 }
