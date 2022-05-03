@@ -14,6 +14,7 @@ function App() {
 
   const activeChannelIdRef = React.useRef(activeChannelId)
   function setActiveChannelId(data: number) {
+    console.log("Setting ActiveChannelId To: " + data)
     activeChannelIdRef.current = data
     _setActiveChannelId(data)
   }
@@ -45,7 +46,7 @@ function App() {
       <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
       <div className="main">
         <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel}/>
-        <Chat activeChannelId={activeChannelIdRef.current}/>
+        <Chat activeChannelIdRef={activeChannelIdRef}/>
       </div>
     </div>
   );

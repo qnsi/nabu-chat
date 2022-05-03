@@ -48,17 +48,17 @@ export async function GetAllMessages(channelId: number): Promise<{messages: mess
   })
 }
 
-export function setServerSideEvents(setMessages: Function, activeChannelId: number, lastMessageId: number) {
+export function setServerSideEvents(setMessages: Function, activeChannelIdRef: React.MutableRefObject<number>, lastMessageId: number) {
   var clientUUID = crypto.randomUUID()
-  var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${activeChannelId}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
+  var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${activeChannelIdRef.current}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
 
   eventSource.onmessage = e => {
-    console.log("Inside eventSource on message. ActiveChannelId: " + activeChannelId)
+    console.log("Inside eventSource on message. ActiveChannelId: " + activeChannelIdRef.current)
     const messages = parseMessagesFromJson(JSON.parse(e.data))
     setMessages((state: messagesArray) => {
       var notSyncedMessages: messagesArray = []
       for (let message of messages) {
-        if (message.channelId === activeChannelId) {
+        if (message.channelId === activeChannelIdRef.current) {
           var index = state.findIndex(state_message => state_message.id === message.id) 
           if (index === -1) {
             notSyncedMessages.push(message)

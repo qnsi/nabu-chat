@@ -8,13 +8,13 @@ export type messagesArray = Array<messageType>
 const initial_messages: messagesArray = []
 
 
-function Chat(props: {activeChannelId: number}) {
+function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>}) {
   const [messages, setMessages] = React.useState(initial_messages)
   const [lastMessageId, setLastMessageId] = React.useState(0)
 
   React.useEffect(() => {
-    if (props.activeChannelId !== 0) {
-      GetAllMessages(props.activeChannelId).then((res: {messages: messageType[], status: string}) => {
+    if (props.activeChannelIdRef.current !== 0) {
+      GetAllMessages(props.activeChannelIdRef.current).then((res: {messages: messageType[], status: string}) => {
         if (res.status === "ok") {
           var lastMessageId = 0
           if (res.messages.length > 0) {
@@ -22,14 +22,14 @@ function Chat(props: {activeChannelId: number}) {
             lastMessageId = sortedMessages[0].id
           }
           setLastMessageId(lastMessageId)
-          setServerSideEvents(setMessages, props.activeChannelId, lastMessageId)
+          setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
           setMessages(res.messages)
         } else {
           //
         }
       })
     }
-  }, [props.activeChannelId])
+  }, [props.activeChannelIdRef.current])
 
 
   async function newMessage(message: messageType) {
@@ -47,7 +47,7 @@ function Chat(props: {activeChannelId: number}) {
   return (
     <div className="chat">
       <ChatMessages messages={messages} retrySendingMessage={retrySendingMessage}/>
-      <ChatTextField newMessage={newMessage} activeChannelId={props.activeChannelId}/>
+      <ChatTextField newMessage={newMessage} activeChannelIdRef={props.activeChannelIdRef}/>
     </div>
   )
 }

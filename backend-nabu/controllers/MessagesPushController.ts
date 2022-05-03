@@ -41,6 +41,8 @@ export async function createAndRunMessageEvent(req: Request, res: Response, not_
     }
 
     if (notSyncedForUUID.length > 0) {
+      console.log("Sending new messages to user: " + req.query.clientUUID)
+      console.log(JSON.stringify(notSyncedForUUID))
       res.write("data: " + JSON.stringify(notSyncedForUUID) +  '\n\n');
       var client = clientUUIDSyncArray.find(client => client.clientUUID === String(req.query.clientUUID))
       if (client) {
