@@ -1,5 +1,5 @@
 import {test, expect} from "@playwright/test"
-import { sendMessage } from "./testHelpers.spec";
+import { sendMessage } from "../testHelpers";
 
 test("getMessages API with wrong request", async ({ request }) => {
   await request.get("http://localhost:3001/dangerous/only_in_dev/clear_database")
