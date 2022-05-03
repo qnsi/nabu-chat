@@ -8,12 +8,13 @@ export type messagesArray = Array<messageType>
 const initial_messages: messagesArray = []
 
 
-function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>}) {
+
+function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>, setUnreads: Function}) {
   const [messages, setMessages] = React.useState(initial_messages)
   const [lastMessageId, setLastMessageId] = React.useState(0)
 
   React.useEffect(() => {
-    const eventSource = setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
+    const eventSource = setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId, props.setUnreads)
 
     return function cleanup() {
       eventSource.close()

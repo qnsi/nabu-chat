@@ -48,6 +48,10 @@ Right now you need to stop development backend server and run it again with diff
 
 `npx playwright test`
 
+Run test with playwright inspector
+add `await page.pause()`
+run `PWDEBUG=1 npx playwright test tests/unreadMessages `
+
 # Nabu vision
 Slack / slack-like team chat applications are ubiquitous in companies right now. Most people I talk to, are stressed by a constant need to monitor team chat, never knowing if notification is signaling a very important message from their boss or just another cool meme sent by a colleague. As a result our work is getting more chaotic, fragmented and we produce less valuable work. My esteemed reader has probably read Deep Work by Cal Newport. The other problem I find with team chat is ephemeral nature, where text messages are getting lost and forgotten, and you have to rely on memory about what was decided regarding specific tasks.
 
