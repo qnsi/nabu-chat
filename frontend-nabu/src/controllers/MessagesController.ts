@@ -1,4 +1,3 @@
-import { updateCommaList } from "typescript"
 import { unreadType } from "../App"
 import { messagesArray, messageType } from "../components/Chat"
 
@@ -55,7 +54,6 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
   var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${activeChannelIdRef.current}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
 
   eventSource.onmessage = e => {
-    console.log("Inside eventSource on message. ActiveChannelId: " + activeChannelIdRef.current)
     const messages = parseMessagesFromJson(JSON.parse(e.data))
     setMessages((state: messagesArray) => {
       var notSyncedMessages: messagesArray = []
@@ -70,7 +68,6 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
       return state.concat(notSyncedMessages)
     })
     setUnreads((state: unreadType[]) => {
-      console.log("Setting Unreads")
       var updatedCount: unreadType[] = []
       for (let message of messages) {
         if (message.channelId !== activeChannelIdRef.current) {
@@ -82,8 +79,6 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
           }
         }
       }
-      console.log("updatedCount")
-      console.log(updatedCount)
 
       // We need to join two nonoverlaping arrays. Ids can be [1,2,3] and [2,3,4]
       const newState = state.map((state_unread) => {
@@ -103,8 +98,6 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
         }
       }
 
-      console.log("New state for setUnreads")
-      console.log(newState)
       return newState
     })
   }
