@@ -10,7 +10,13 @@ const initial_channels: channelsArray = []
 function App() {
   const [channels, setChannels] = React.useState(initial_channels)
 
-  const [activeChannelId, setActiveChannelId] = React.useState(0)
+  const [activeChannelId, _setActiveChannelId] = React.useState(0)
+
+  const activeChannelIdRef = React.useRef(activeChannelId)
+  function setActiveChannelId(data: number) {
+    activeChannelIdRef.current = data
+    _setActiveChannelId(data)
+  }
 
   React.useEffect(() => {
     var activeIndex = channels.findIndex(x => x.status == "active")
@@ -20,6 +26,7 @@ function App() {
   }, [channels])
 
   function updateActiveChannel(channelId: number) {
+    setActiveChannelId(channelId)
     setChannels((state: channelsArray) => {
       var clickedIndex = state.findIndex(x => x.id == channelId);
       var lastActiveIndex = state.findIndex(x => x.status == "active")
@@ -38,7 +45,7 @@ function App() {
       <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
       <div className="main">
         <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel}/>
-        <Chat activeChannelId={activeChannelId}/>
+        <Chat activeChannelId={activeChannelIdRef.current}/>
       </div>
     </div>
   );
