@@ -53,8 +53,21 @@ body {
   background-color: #ecefe6;
 }
 
+.channel-parent {
+  display: flex;
+  flex-direction: row;
+}
+
 .channel-active {
   background-color: #dfe5d4;
+}
+
+.channel-unread {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: auto;
+  font-size: 12px;
+  background-color: hsl(0, 100%, 90%)
 }
 
 .chat {
@@ -70,4 +83,5 @@ body {
 
 .chat-messages {
   flex-grow: 50;
+  margin-left: 5%;
 }

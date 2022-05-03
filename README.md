@@ -1,5 +1,5 @@
 # Why such limited code example
-I decided to look for jobs recently, dropping my goal of entrepreneurship for now. It's not that often that you see a cool startup like Gyfted hiring in Poland, and that's why I decided too apply, even though I don't have a portfolio ready.
+I decided to look for jobs recently, dropping my goal of entrepreneurship for now. 
 
 I am realistically programming my whole life, starting in the primary school, where I was a laurate at country wide programming competition in Logo. But I was switching languages quite a bit, lately focusing on javascript with typescript.
 
@@ -47,6 +47,10 @@ Right now you need to stop development backend server and run it again with diff
 `npm install -D @playwright/test`
 
 `npx playwright test`
+
+Run test with playwright inspector
+add `await page.pause()`
+run `PWDEBUG=1 npx playwright test tests/unreadMessages `
 
 # Nabu vision
 Slack / slack-like team chat applications are ubiquitous in companies right now. Most people I talk to, are stressed by a constant need to monitor team chat, never knowing if notification is signaling a very important message from their boss or just another cool meme sent by a colleague. As a result our work is getting more chaotic, fragmented and we produce less valuable work. My esteemed reader has probably read Deep Work by Cal Newport. The other problem I find with team chat is ephemeral nature, where text messages are getting lost and forgotten, and you have to rely on memory about what was decided regarding specific tasks.

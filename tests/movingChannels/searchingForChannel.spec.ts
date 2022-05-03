@@ -1,5 +1,5 @@
 import {test, expect} from "@playwright/test"
-import { sendMessage } from "./testHelpers.spec";
+import { sendMessage } from "../testHelpers";
 
 test("search for main channel and click should show main messages", async ({ page }) => {
   await page.goto("http://localhost:3001/dangerous/only_in_dev/clear_database")

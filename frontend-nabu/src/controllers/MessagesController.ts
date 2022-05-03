@@ -1,3 +1,4 @@
+import { unreadType } from "../App"
 import { messagesArray, messageType } from "../components/Chat"
 
 export async function CreateNewMessage(message: messageType): Promise<messageType> {
@@ -48,12 +49,11 @@ export async function GetAllMessages(channelId: number): Promise<{messages: mess
   })
 }
 
-export function setServerSideEvents(setMessages: Function, activeChannelIdRef: React.MutableRefObject<number>, lastMessageId: number) {
+export function setServerSideEvents(setMessages: Function, activeChannelIdRef: React.MutableRefObject<number>, lastMessageId: number, setUnreads: Function): EventSource {
   var clientUUID = crypto.randomUUID()
   var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${activeChannelIdRef.current}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
 
   eventSource.onmessage = e => {
-    console.log("Inside eventSource on message. ActiveChannelId: " + activeChannelIdRef.current)
     const messages = parseMessagesFromJson(JSON.parse(e.data))
     setMessages((state: messagesArray) => {
       var notSyncedMessages: messagesArray = []
@@ -67,7 +67,41 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
       }
       return state.concat(notSyncedMessages)
     })
+    setUnreads((state: unreadType[]) => {
+      var updatedCount: unreadType[] = []
+      for (let message of messages) {
+        if (message.channelId !== activeChannelIdRef.current) {
+          var found_updated = updatedCount.find(updated => updated.channelId === message.channelId)
+          if (found_updated !== undefined) {
+            found_updated.count++
+          } else {
+            updatedCount.push({channelId: message.channelId, count: 1})
+          }
+        }
+      }
+
+      // We need to join two nonoverlaping arrays. Ids can be [1,2,3] and [2,3,4]
+      const newState = state.map((state_unread) => {
+        var updated_unread = updatedCount.find(upd => upd.channelId === state_unread.channelId)
+        if (updated_unread !== undefined) {
+          return {...state_unread, count: state_unread.count+updated_unread.count}
+        } else {
+          return state_unread
+        }
+      })
+
+      // Push into state, where no unreads exist
+      for (let updated of updatedCount) {
+        var found = state.find(unr => unr.channelId === updated.channelId)
+        if (found === undefined) {
+          newState.push({channelId: updated.channelId, count: updated.count})
+        }
+      }
+
+      return newState
+    })
   }
+  return eventSource
 }
 
 function parseMessagesFromJson(jsonArray: Array<{id: number, channelId: number, createAt: string, updatedAt: string, content: string, senderId: number}>) {

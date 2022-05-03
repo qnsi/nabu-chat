@@ -27,6 +27,7 @@ model User {
   updatedAt DateTime  @updatedAt
   username  String
   messages  Message[]
+  lastReadMessages LastReadMessages[]
 }
 
 model Channel {
@@ -35,4 +36,17 @@ model Channel {
   updatedAt DateTime @default(now())
   name String
   messages Message[]
+  lastReadMessages LastReadMessages[]
+}
+
+model LastReadMessages {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  channel Channel @relation(fields: [channelId], references: [id])
+  channelId Int
+  normalMessageId Int
+  priorityMessageId Int
 }

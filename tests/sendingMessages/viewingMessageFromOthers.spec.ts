@@ -1,5 +1,5 @@
 import {test, expect} from "@playwright/test"
-import { sendMessage, switchToChannel } from "./testHelpers.spec";
+import { sendMessage, switchToChannel } from "../testHelpers";
 
 test("when other user sends message we should get it pushed", async ({ page, context }) => {
   await page.goto("http://localhost:3001/dangerous/only_in_dev/clear_database")

@@ -7,6 +7,9 @@ import ChannelList, { channelsArray } from './components/ChannelList'
 
 const initial_channels: channelsArray = []
 
+export type unreadType = {channelId: number, count: number}
+const initialUnreads: unreadType[] = []
+
 function App() {
   const [channels, setChannels] = React.useState(initial_channels)
 
@@ -18,6 +21,9 @@ function App() {
     activeChannelIdRef.current = data
     _setActiveChannelId(data)
   }
+
+  const [unreads, setUnreads] = React.useState(initialUnreads)
+
 
   React.useEffect(() => {
     var activeIndex = channels.findIndex(x => x.status == "active")
@@ -45,8 +51,8 @@ function App() {
     <div className="App">
       <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
       <div className="main">
-        <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel}/>
-        <Chat activeChannelIdRef={activeChannelIdRef}/>
+        <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel} unreads={unreads}/>
+        <Chat activeChannelIdRef={activeChannelIdRef} setUnreads={setUnreads}/>
       </div>
     </div>
   );
