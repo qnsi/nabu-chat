@@ -13,6 +13,10 @@ function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>}) {
   const [lastMessageId, setLastMessageId] = React.useState(0)
 
   React.useEffect(() => {
+    setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
+  }, [])
+
+  React.useEffect(() => {
     if (props.activeChannelIdRef.current !== 0) {
       GetAllMessages(props.activeChannelIdRef.current).then((res: {messages: messageType[], status: string}) => {
         if (res.status === "ok") {
@@ -22,7 +26,6 @@ function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>}) {
             lastMessageId = sortedMessages[0].id
           }
           setLastMessageId(lastMessageId)
-          setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
           setMessages(res.messages)
         } else {
           //
