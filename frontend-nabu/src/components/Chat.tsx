@@ -13,7 +13,11 @@ function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>}) {
   const [lastMessageId, setLastMessageId] = React.useState(0)
 
   React.useEffect(() => {
-    setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
+    const eventSource = setServerSideEvents(setMessages, props.activeChannelIdRef, lastMessageId)
+
+    return function cleanup() {
+      eventSource.close()
+    };
   }, [])
 
   React.useEffect(() => {

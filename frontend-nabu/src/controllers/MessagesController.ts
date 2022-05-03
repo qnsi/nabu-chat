@@ -48,7 +48,7 @@ export async function GetAllMessages(channelId: number): Promise<{messages: mess
   })
 }
 
-export function setServerSideEvents(setMessages: Function, activeChannelIdRef: React.MutableRefObject<number>, lastMessageId: number) {
+export function setServerSideEvents(setMessages: Function, activeChannelIdRef: React.MutableRefObject<number>, lastMessageId: number): EventSource {
   var clientUUID = crypto.randomUUID()
   var eventSource = new EventSource(`http://localhost:3001/messages_event?channelId=${activeChannelIdRef.current}&lastMessageId=${lastMessageId}&clientUUID=${clientUUID}`);
 
@@ -68,6 +68,7 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
       return state.concat(notSyncedMessages)
     })
   }
+  return eventSource
 }
 
 function parseMessagesFromJson(jsonArray: Array<{id: number, channelId: number, createAt: string, updatedAt: string, content: string, senderId: number}>) {
