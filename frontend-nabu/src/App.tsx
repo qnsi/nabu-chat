@@ -3,59 +3,39 @@ import logo from './logo.svg';
 import './App.css';
 import Chat from './components/Chat';
 import Navigation from './components/Navigation';
-import ChannelList, { channelsArray } from './components/ChannelList'
+import ChannelList from './components/ChannelList'
 
-const initial_channels: channelsArray = []
+export type channelType = {id: number, name: string, status: string}
+const initialChannels: channelType[] = []
 
 export type unreadType = {channelId: number, count: number}
 const initialUnreads: unreadType[] = []
 
 function App() {
-  const [channels, setChannels] = React.useState(initial_channels)
-
-  const [activeChannelId, _setActiveChannelId] = React.useState(0)
-
-  const activeChannelIdRef = React.useRef(activeChannelId)
-  function setActiveChannelId(data: number) {
-    console.log("Setting ActiveChannelId To: " + data)
-    activeChannelIdRef.current = data
-    _setActiveChannelId(data)
-  }
-
+  const [channels, setChannels] = React.useState(initialChannels)
+  const {activeChannelIdRef, setActiveChannelId} = _useStateActiveChannelIdUsingRefs()
   const [unreads, setUnreads] = React.useState(initialUnreads)
-
-
-  React.useEffect(() => {
-    var activeIndex = channels.findIndex(x => x.status == "active")
-    if (activeIndex !== -1) {
-      setActiveChannelId(channels[activeIndex].id)
-    }
-  }, [channels])
-
-  function updateActiveChannel(channelId: number) {
-    setActiveChannelId(channelId)
-    setChannels((state: channelsArray) => {
-      var clickedIndex = state.findIndex(x => x.id == channelId);
-      var lastActiveIndex = state.findIndex(x => x.status == "active")
-
-      var nextState = state.slice()
-
-      nextState[lastActiveIndex].status = "ok"
-      nextState[clickedIndex].status = "active"
-
-      return nextState
-    })
-  }
 
   return (
     <div className="App">
-      <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
+      <Navigation channels={channels} setActiveChannelId={setActiveChannelId}/>
       <div className="main">
-        <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel} unreads={unreads}/>
+        <ChannelList channels={channels} setChannels={setChannels} activeChannelIdRef={activeChannelIdRef} setActiveChannelId={setActiveChannelId} unreads={unreads}/>
         <Chat activeChannelIdRef={activeChannelIdRef} setUnreads={setUnreads}/>
       </div>
     </div>
   );
+
+  function _useStateActiveChannelIdUsingRefs() {
+    const [activeChannelId, _setActiveChannelId] = React.useState(0)
+
+    const activeChannelIdRef = React.useRef(activeChannelId)
+    const setActiveChannelId = (data: number) => {
+      activeChannelIdRef.current = data
+      _setActiveChannelId(data)
+    }
+    return {activeChannelIdRef: activeChannelIdRef, setActiveChannelId: setActiveChannelId}
+  }
 }
 
 export default App;

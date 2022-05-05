@@ -1,5 +1,5 @@
 import { unreadType } from "../App"
-import { messagesArray, messageType } from "../components/Chat"
+import { messageType } from "../components/Chat"
 
 export async function CreateNewMessage(message: messageType): Promise<messageType> {
   return new Promise((resolve, reject) => {
@@ -55,8 +55,8 @@ export function setServerSideEvents(setMessages: Function, activeChannelIdRef: R
 
   eventSource.onmessage = e => {
     const messages = parseMessagesFromJson(JSON.parse(e.data))
-    setMessages((state: messagesArray) => {
-      var notSyncedMessages: messagesArray = []
+    setMessages((state: messageType[]) => {
+      var notSyncedMessages: messageType[] = []
       for (let message of messages) {
         if (message.channelId === activeChannelIdRef.current) {
           var index = state.findIndex(state_message => state_message.id === message.id) 

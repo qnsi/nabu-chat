@@ -1,27 +1,13 @@
 import React from "react"
-import { unreadType } from "../App";
+import { channelType, unreadType } from "../App";
 import { GetAllChannels } from "../controllers/ChannelsController";
 
-export type channelType = {id: number, name: string, status: string}
-export type channelsArray = Array<channelType>
 
 
-function ChannelList(props: {channels: channelsArray, setChannels: Function, updateActiveChannel: Function, unreads: unreadType[]}) {
+function ChannelList(props: {channels: channelType[], setChannels: Function, activeChannelIdRef: React.MutableRefObject<number>, setActiveChannelId: Function, unreads: unreadType[]}) {
   React.useEffect(() => {
-    GetAllChannels().then((res: {channels: channelsArray, status: string}) => {
-      if (res.status === "ok") {
-        props.setChannels(res.channels)
-      } else {
-        //
-      }
-    })
+    _getAllChannelsAndSetState()
   }, [])
-
-  function handleChannelClick(e: React.MouseEvent) {
-    e.preventDefault()
-    let channelId = Number(e.currentTarget.id.substring(8))
-    props.updateActiveChannel(channelId)
-  }
 
   function getUnreadCountForChannel(channel: channelType) {
     const unread = props.unreads.find(unr => unr.channelId === channel.id)
@@ -32,31 +18,61 @@ function ChannelList(props: {channels: channelsArray, setChannels: Function, upd
     return unread_count
   }
 
+  function getUnreadBadge(channel: channelType) {
+    const unread_count = getUnreadCountForChannel(channel)
+    let unread_div = <></>
+    if (unread_count > 0) {
+      unread_div = <div className="channel-unread">{unread_count}</div>
+    }
+    return unread_div
+  }
+
+  function getLinkClassList(channel: channelType): string {
+    if (channel.id === props.activeChannelIdRef.current) {
+      return "channel channel-active"
+    } else {
+      return "channel"
+    }
+  }
+
   return (
     <div className="left-panel">
       {props.channels.map((channel, i) => {
-        const unread_count = getUnreadCountForChannel(channel)
-        let unread_div = <></>
-        if (unread_count > 0) {
-          unread_div = <div className="channel-unread">{unread_count}</div>
-        }
+        let unread_div = getUnreadBadge(channel)
+        let linkClassList = getLinkClassList(channel)
 
-        if (channel.status === "ok") {
-          return (
+        return (
           <div className="channel-parent" key={channel.id}>
-            <a onClick={handleChannelClick} className="channel"  id={"channel-" + channel.id}>{channel.name}</a>
+            <a onClick={() => props.setActiveChannelId(channel.id)}
+               className={linkClassList}
+               id={"channel-" + channel.id}
+            >
+              {channel.name}
+            </a>
             {unread_div}
-          </div>);
-        } else if (channel.status === "active") {
-          return (
-          <div className="channel-parent" key={channel.id}>
-            <a onClick={handleChannelClick} className="channel channel-active"  id={"channel-" + channel.id}>{channel.name}</a>
-            {unread_div}
-          </div>);
-        }
+          </div>
+        );
       })}
     </div>
   )
+
+  function _getAllChannelsAndSetState() {
+    GetAllChannels().then((res: {channels: channelType[], status: string}) => {
+      if (res.status === "ok") {
+        props.setChannels(res.channels)
+        _setActiveChannelIdToMain(res.channels)
+      } else {
+        //
+      }
+    })
+  }
+
+  function _setActiveChannelIdToMain(channels: channelType[]) {
+    const mainChannelId = channels.find(channel => channel.name === "main")
+    if (mainChannelId) {
+      props.setActiveChannelId(mainChannelId.id)
+    }
+  }
 }
 
 export default ChannelList

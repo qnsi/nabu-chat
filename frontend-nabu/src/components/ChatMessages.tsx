@@ -1,27 +1,37 @@
 import React from "react";
-import { messagesArray } from "./Chat";
+import { messageType } from "./Chat";
 
-function ChatMessages(props: {messages: messagesArray, retrySendingMessage: Function}) {
-  function retrySendingMessage(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    // e.currentTarget.parentElement.key
-    props.retrySendingMessage("id")
+function ChatMessages(props: {messages: messageType[], retrySendingMessage: Function}) {
+  function getMessageClassList(message: messageType): string {
+    if (message.status === "ok") {
+      return "chat-message"
+    } else {
+      return "chat-message error"
+    }
+  }
+
+  function getRetryButton(message: messageType) {
+    if (message.status === "ok") {
+      return <></>
+    } else {
+      return (
+        <button onClick={() => {props.retrySendingMessage(message.id)}}>
+          Something went wrong. Retry?
+        </button>
+      )
+    }
   }
 
   return (
     <div className="chat-messages">
       {props.messages.map((message, i) => {     
-           // Return the element. Also pass key     
-          //  return (<Answer key={answer} answer={answer} />) 
-          if (message.status === "ok") {
-            return (<div className="chat-message" key={message.id}>{message.sender}: {message.text}</div>)
-          } else if (message.status === "error") {
-            return (<div className="chat-message error" key={message.id}>
-              {message.sender}: {message.text}
-              <button onClick={retrySendingMessage}>Something went wrong. Retry?</button>
-            </div>)
-          }
-        })}
+        return (
+          <div className={getMessageClassList(message)} key={message.id}>
+            {message.sender}: {message.text}
+            {getRetryButton(message)}
+          </div>
+        )
+      })}
     </div>
   )
 }
