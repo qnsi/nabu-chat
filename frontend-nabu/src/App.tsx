@@ -12,42 +12,20 @@ const initialUnreads: unreadType[] = []
 
 function App() {
   const [channels, setChannels] = React.useState(initial_channels)
-  const {activeChannelIdRef, setActiveChannelId} = useStateActiveChannelIdUsingRefs()
+  const {activeChannelIdRef, setActiveChannelId} = _useStateActiveChannelIdUsingRefs()
   const [unreads, setUnreads] = React.useState(initialUnreads)
-
-  React.useEffect(() => {
-    var activeIndex = channels.findIndex(x => x.status == "active")
-    if (activeIndex !== -1) {
-      setActiveChannelId(channels[activeIndex].id)
-    }
-  }, [channels])
-
-  function updateActiveChannel(channelId: number) {
-    setActiveChannelId(channelId)
-    setChannels((state: channelsArray) => {
-      var clickedIndex = state.findIndex(x => x.id == channelId);
-      var lastActiveIndex = state.findIndex(x => x.status == "active")
-
-      var nextState = state.slice()
-
-      nextState[lastActiveIndex].status = "ok"
-      nextState[clickedIndex].status = "active"
-
-      return nextState
-    })
-  }
 
   return (
     <div className="App">
-      <Navigation channels={channels} updateActiveChannel={updateActiveChannel}/>
+      <Navigation channels={channels} setActiveChannelId={setActiveChannelId}/>
       <div className="main">
-        <ChannelList channels={channels} setChannels={setChannels} updateActiveChannel={updateActiveChannel} unreads={unreads}/>
+        <ChannelList channels={channels} setChannels={setChannels} activeChannelIdRef={activeChannelIdRef} setActiveChannelId={setActiveChannelId} unreads={unreads}/>
         <Chat activeChannelIdRef={activeChannelIdRef} setUnreads={setUnreads}/>
       </div>
     </div>
   );
 
-  function useStateActiveChannelIdUsingRefs() {
+  function _useStateActiveChannelIdUsingRefs() {
     const [activeChannelId, _setActiveChannelId] = React.useState(0)
 
     const activeChannelIdRef = React.useRef(activeChannelId)
@@ -57,7 +35,6 @@ function App() {
     }
     return {activeChannelIdRef: activeChannelIdRef, setActiveChannelId: setActiveChannelId}
   }
-
 }
 
 export default App;

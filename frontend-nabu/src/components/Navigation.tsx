@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react"
 import { channelsArray } from "./ChannelList";
 
-function Navigation(props: {channels: channelsArray, updateActiveChannel: Function}) {
+function Navigation(props: {channels: channelsArray, setActiveChannelId: Function}) {
   const [searchText, setSearchText] = React.useState("")
 
   function handleSearch(e: FormEvent<HTMLInputElement>) {
@@ -12,7 +12,7 @@ function Navigation(props: {channels: channelsArray, updateActiveChannel: Functi
   function changeActiveChannel(e: React.MouseEvent) {
     const clickedChannel = props.channels.find(channel => channel.name == e.currentTarget.textContent);
     if (clickedChannel != undefined) {
-      props.updateActiveChannel(clickedChannel.id)
+      props.setActiveChannelId(clickedChannel.id)
       setSearchText("")
     }
   }

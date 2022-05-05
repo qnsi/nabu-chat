@@ -24,11 +24,7 @@ export async function GetAllChannels(): Promise<{channels: channelsArray, status
 
 function parseChannelsFromJson(jsonArray: Array<{id: number, createdAt: string, updatedAt: string, name: string}>) {
   const channels: channelsArray = jsonArray.map(channel => {
-    if (channel.name == "main") {
-      return {id: channel.id, name: channel.name, status: "active"}
-    } else {
-      return {id: channel.id, name: channel.name, status: "ok"}
-    }
+    return {id: channel.id, name: channel.name, status: "ok"}
   })
   return channels
 }
