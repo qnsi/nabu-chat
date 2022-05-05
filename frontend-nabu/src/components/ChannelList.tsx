@@ -1,14 +1,12 @@
 import React from "react"
-import { unreadType } from "../App";
+import { channelType, unreadType } from "../App";
 import { GetAllChannels } from "../controllers/ChannelsController";
 
-export type channelType = {id: number, name: string, status: string}
-export type channelsArray = Array<channelType>
 
 
-function ChannelList(props: {channels: channelsArray, setChannels: Function, activeChannelIdRef: React.MutableRefObject<number>, setActiveChannelId: Function, unreads: unreadType[]}) {
+function ChannelList(props: {channels: channelType[], setChannels: Function, activeChannelIdRef: React.MutableRefObject<number>, setActiveChannelId: Function, unreads: unreadType[]}) {
   React.useEffect(() => {
-    GetAllChannels().then((res: {channels: channelsArray, status: string}) => {
+    GetAllChannels().then((res: {channels: channelType[], status: string}) => {
       if (res.status === "ok") {
         props.setChannels(res.channels)
         _setActiveChannelIdToMain(res.channels)

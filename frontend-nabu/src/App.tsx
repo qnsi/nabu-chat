@@ -3,15 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 import Chat from './components/Chat';
 import Navigation from './components/Navigation';
-import ChannelList, { channelsArray } from './components/ChannelList'
+import ChannelList from './components/ChannelList'
 
-const initial_channels: channelsArray = []
+export type channelType = {id: number, name: string, status: string}
+const initialChannels: channelType[] = []
 
 export type unreadType = {channelId: number, count: number}
 const initialUnreads: unreadType[] = []
 
 function App() {
-  const [channels, setChannels] = React.useState(initial_channels)
+  const [channels, setChannels] = React.useState(initialChannels)
   const {activeChannelIdRef, setActiveChannelId} = _useStateActiveChannelIdUsingRefs()
   const [unreads, setUnreads] = React.useState(initialUnreads)
 

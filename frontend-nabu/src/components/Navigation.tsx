@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react"
-import { channelsArray } from "./ChannelList";
+import { channelType } from "../App";
 
-function Navigation(props: {channels: channelsArray, setActiveChannelId: Function}) {
+function Navigation(props: {channels: channelType[], setActiveChannelId: Function}) {
   const [searchText, setSearchText] = React.useState("")
 
   function handleSearch(e: FormEvent<HTMLInputElement>) {
