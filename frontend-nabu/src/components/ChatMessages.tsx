@@ -1,7 +1,7 @@
 import React from "react";
-import { messagesArray } from "./Chat";
+import { messageType } from "./Chat";
 
-function ChatMessages(props: {messages: messagesArray, retrySendingMessage: Function}) {
+function ChatMessages(props: {messages: messageType[], retrySendingMessage: Function}) {
   function retrySendingMessage(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     // e.currentTarget.parentElement.key
