@@ -12,18 +12,8 @@ const initialUnreads: unreadType[] = []
 
 function App() {
   const [channels, setChannels] = React.useState(initial_channels)
-
-  const [activeChannelId, _setActiveChannelId] = React.useState(0)
-
-  const activeChannelIdRef = React.useRef(activeChannelId)
-  function setActiveChannelId(data: number) {
-    console.log("Setting ActiveChannelId To: " + data)
-    activeChannelIdRef.current = data
-    _setActiveChannelId(data)
-  }
-
+  const {activeChannelIdRef, setActiveChannelId} = useStateActiveChannelIdUsingRefs()
   const [unreads, setUnreads] = React.useState(initialUnreads)
-
 
   React.useEffect(() => {
     var activeIndex = channels.findIndex(x => x.status == "active")
@@ -56,6 +46,18 @@ function App() {
       </div>
     </div>
   );
+
+  function useStateActiveChannelIdUsingRefs() {
+    const [activeChannelId, _setActiveChannelId] = React.useState(0)
+
+    const activeChannelIdRef = React.useRef(activeChannelId)
+    const setActiveChannelId = (data: number) => {
+      activeChannelIdRef.current = data
+      _setActiveChannelId(data)
+    }
+    return {activeChannelIdRef: activeChannelIdRef, setActiveChannelId: setActiveChannelId}
+  }
+
 }
 
 export default App;
