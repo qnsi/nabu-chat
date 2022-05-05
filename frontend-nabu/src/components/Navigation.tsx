@@ -20,15 +20,9 @@ function Navigation(props: {channels: channelType[], setActiveChannelId: Functio
   let searchSuggestions;
   
   if (searchText !== "") {
-    searchSuggestions = (<div className="search-suggestions">
-      {props.channels.map((channel, i) => {
-        if (channel.name.includes(searchText)) {
-          return (<div onClick={changeActiveChannel}className="search-suggestion" key={i}>{channel.name}</div>)
-        }
-      })}
-    </div>)
+    searchSuggestions = _prepareSearchSuggestions()
   } else {
-    <></>
+    searchSuggestions = <></>
   }
 
   return (
@@ -40,6 +34,16 @@ function Navigation(props: {channels: channelType[], setActiveChannelId: Functio
         </form> 
       </div>
   )
+
+  function _prepareSearchSuggestions() {
+    return (<div className="search-suggestions">
+      {props.channels.map((channel, i) => {
+        if (channel.name.includes(searchText)) {
+          return (<div onClick={changeActiveChannel}className="search-suggestion" key={i}>{channel.name}</div>)
+        }
+      })}
+    </div>)
+  }
 }
 
 export default Navigation
