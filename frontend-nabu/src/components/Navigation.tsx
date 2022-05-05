@@ -43,7 +43,6 @@ function Navigation(props: {channels: channelType[], setActiveChannelId: Functio
                 {channel.name}
             </div>
           )
-
         }
       })}
     </div>)
