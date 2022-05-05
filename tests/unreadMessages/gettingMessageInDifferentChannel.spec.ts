@@ -9,9 +9,14 @@ test("when other user sends message we should get it pushed", async ({ page, con
   await switchToChannel(second_page, "random")
   await sendMessage(second_page, "Hello world!")
 
+  // badge should be visible
   await page.waitForTimeout(1100)
-  // const chat_message = page.locator(".channel-parent:has-text('random') > channel-unread")
-  const chat_message = page.locator(".channel-parent:has-text('random') > .channel-unread")
-  await expect(await chat_message.isVisible()).toBe(true)
-  await expect(chat_message).toHaveText("1")
+  const unread_badge = page.locator(".channel-parent:has-text('random') > .channel-unread")
+  await expect(await unread_badge.isVisible()).toBe(true)
+  await expect(unread_badge).toHaveText("1")
+
+  // moving to channel should clear the badge
+  await switchToChannel(page, "random")
+  const unread_badge2 = page.locator(".channel-parent:has-text('random') > .channel-unread")
+  await expect(await unread_badge2.isVisible()).toBe(false)
 });

@@ -2,6 +2,7 @@ import React from "react";
 import ChatTextField from "./ChatTextField";
 import ChatMessages from "./ChatMessages";
 import { CreateNewMessage, GetAllMessages, setServerSideEvents } from "../controllers/MessagesController";
+import { unreadType } from "../App";
 
 export type messageType = {id: number, channelId: number, sender: string, text: string, status: string}
 export type messagesArray = Array<messageType>
@@ -32,6 +33,15 @@ function Chat(props: {activeChannelIdRef: React.MutableRefObject<number>, setUnr
           }
           setLastMessageId(lastMessageId)
           setMessages(res.messages)
+          props.setUnreads((state: unreadType[]) => {
+            return state.map((unread) => {
+              if (unread.channelId === props.activeChannelIdRef.current) {
+                return {...unread, count: 0}
+              } else {
+                return unread
+              }
+            })
+          })
         } else {
           //
         }
