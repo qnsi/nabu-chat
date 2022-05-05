@@ -17,29 +17,33 @@ function Navigation(props: {channels: channelType[], setActiveChannelId: Functio
     }
   }
 
-  let searchSuggestions;
+  let searchSuggestions = <></>
   
   if (searchText !== "") {
     searchSuggestions = _prepareSearchSuggestions()
-  } else {
-    searchSuggestions = <></>
   }
 
   return (
-      <div className="navigation">
-        <div className="logo">Nabu</div>
-        <form className="search-bar-form">
-          <input className="search-bar" type="text" value={searchText} onChange={handleSearch} />
-          {searchSuggestions}
-        </form> 
-      </div>
+    <div className="navigation">
+      <div className="logo">Nabu</div>
+      <form className="search-bar-form">
+        <input className="search-bar" type="text" value={searchText} onChange={handleSearch} />
+        {searchSuggestions}
+      </form> 
+    </div>
   )
 
   function _prepareSearchSuggestions() {
     return (<div className="search-suggestions">
       {props.channels.map((channel, i) => {
         if (channel.name.includes(searchText)) {
-          return (<div onClick={changeActiveChannel}className="search-suggestion" key={i}>{channel.name}</div>)
+          return (
+            <div onClick={() => props.setActiveChannelId(channel.id)}
+              className="search-suggestion" key={i}>
+                {channel.name}
+            </div>
+          )
+
         }
       })}
     </div>)
